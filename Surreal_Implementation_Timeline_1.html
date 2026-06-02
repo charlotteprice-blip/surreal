@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Surreal Hair and Beauty — Implementation Timeline</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cream: #FAF6F0;
+  --cream-mid: #F2EBE0;
+  --cream-dark: #E8DDD0;
+  --burg: #7B2D42;
+  --burg-light: #9B3A54;
+  --burg-pale: #F5EAEd;
+  --burg-faint: #FBF3F5;
+  --ink: #2C1A22;
+  --ink-mid: #5C4A52;
+  --ink-light: #9A8A90;
+  --rule: #DDD0C8;
+  --white: #FFFFFF;
+  --phase-1a: #7B2D42;
+  --phase-1b: #9B3A54;
+  --phase-2: #B56070;
+  --phase-3: #C4839A;
+  --phase-4: #D4A0B0;
+  --awards: #8C6070;
+  --pre: #4A3040;
+  --green: #2A5C2A;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+.page {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 56px 48px 80px;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 48px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.bb-kicker {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--burg);
+  margin-bottom: 10px;
+}
+
+.header h1 {
+  font-family: 'Inter', sans-serif;
+  font-size: 32px;
+  font-weight: 500;
+  color: var(--burg);
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+
+.header-sub {
+  font-size: 14px;
+  color: var(--ink-mid);
+  font-weight: 300;
+}
+
+.header-meta {
+  text-align: right;
+  font-size: 12px;
+  color: var(--ink-light);
+  line-height: 1.8;
+}
+
+.header-meta strong {
+  display: block;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--burg);
+  margin-bottom: 2px;
+}
+
+/* LEGEND */
+.legend {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+  padding: 14px 18px;
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--ink-mid);
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+/* CHART */
+/* Columns: label | pre | wk1 | wk2 | wk3 | wk4 | wk5 | wk6 */
+.chart-wrap {
+  margin-bottom: 8px;
+}
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: 150px 90px repeat(6, 1fr);
+  gap: 0;
+}
+
+/* Week header row */
+.wh-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  padding: 0 6px 8px;
+  text-align: center;
+}
+
+.wh-label.pre-col {
+  color: var(--pre);
+  font-size: 9.5px;
+}
+
+.wh-label:first-child { text-align: left; padding-left: 0; }
+
+/* pre-commencement column shading */
+.pre-col-shade {
+  background: rgba(74,48,64,0.04);
+  border-right: 1.5px dashed #C8B0BC;
+  margin-right: 4px;
+}
+
+/* Phase rows */
+.phase-row {
+  display: contents;
+}
+
+.phase-label-cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4px 0;
+  padding-right: 12px;
+}
+
+.phase-label-tag {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--burg);
+}
+
+.phase-label-name {
+  font-size: 11.5px;
+  color: var(--ink-mid);
+  line-height: 1.3;
+  font-weight: 300;
+}
+
+.bar-cell {
+  padding: 4px 3px;
+  position: relative;
+}
+
+.bar-cell.pre-col-shade {
+  padding: 4px 6px 4px 3px;
+}
+
+.bar {
+  height: 44px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.93);
+  font-weight: 400;
+  line-height: 1.3;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.bar::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: rgba(255,255,255,0.18);
+}
+
+.bar-empty { height: 44px; }
+
+/* Bar colours */
+.bar-pre     { background: var(--pre); }
+.bar-1a      { background: var(--phase-1a); }
+.bar-1b      { background: var(--phase-1b); }
+.bar-2       { background: var(--phase-2); }
+.bar-3       { background: var(--phase-3); }
+.bar-4       { background: var(--phase-4); color: var(--ink); }
+.bar-awards  { background: var(--awards); }
+
+/* Spacer row between phases */
+.spacer-row {
+  grid-column: 1 / -1;
+  height: 6px;
+}
+
+.complete-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--green);
+  color: #fff;
+  padding: 2px 7px;
+  border-radius: 20px;
+  margin-left: 6px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* PRE marker */
+.pre-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  padding: 0 6px 0 3px;
+}
+
+.pre-marker-inner {
+  width: 100%;
+  height: 44px;
+  border-radius: 4px;
+  background: var(--pre);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: rgba(255,255,255,0.9);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-align: center;
+  line-height: 1.3;
+}
+
+/* DIVIDER */
+.divider {
+  height: 1px;
+  background: var(--cream-dark);
+  margin: 28px 0;
+}
+
+/* MILESTONE CARDS */
+.milestones-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--cream-dark);
+}
+
+/* Pre + 6 weeks = 7 cards */
+.milestones-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+}
+
+.milestone-card {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 14px 14px 16px;
+  position: relative;
+  animation: fadeUp 0.4s ease both;
+}
+
+.milestone-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: 6px 6px 0 0;
+}
+
+.mc-pre::before    { background: var(--pre); }
+.mc-1a::before     { background: var(--phase-1a); }
+.mc-1b::before     { background: var(--phase-1b); }
+.mc-2::before      { background: var(--phase-2); }
+.mc-3::before      { background: var(--phase-3); }
+.mc-4::before      { background: var(--phase-4); }
+.mc-awards::before { background: var(--awards); }
+
+.card-week {
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--burg);
+  margin-bottom: 5px;
+}
+
+.card-week.pre { color: var(--pre); }
+
+.card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+.card-body {
+  font-size: 11px;
+  color: var(--ink-mid);
+  line-height: 1.6;
+}
+
+/* REQUIRES */
+.requires-strip {
+  margin-top: 28px;
+  background: var(--burg-faint);
+  border: 1px solid #E8D0D8;
+  border-radius: 6px;
+  padding: 14px 18px;
+}
+
+.requires-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--burg);
+  margin-bottom: 8px;
+}
+
+.requires-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.req-item {
+  font-size: 11.5px;
+  color: var(--ink-mid);
+  background: var(--white);
+  border: 1px solid #E0C8D0;
+  border-radius: 20px;
+  padding: 3px 11px;
+}
+
+/* FOOTER */
+.footer {
+  margin-top: 48px;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-brand {
+  font-size: 11px;
+  color: var(--ink-light);
+  font-style: italic;
+}
+
+.footer-note {
+  font-size: 11px;
+  color: var(--ink-light);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.milestone-card:nth-child(1) { animation-delay: 0.05s; }
+.milestone-card:nth-child(2) { animation-delay: 0.10s; }
+.milestone-card:nth-child(3) { animation-delay: 0.15s; }
+.milestone-card:nth-child(4) { animation-delay: 0.20s; }
+.milestone-card:nth-child(5) { animation-delay: 0.25s; }
+.milestone-card:nth-child(6) { animation-delay: 0.30s; }
+.milestone-card:nth-child(7) { animation-delay: 0.35s; }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="header">
+    <div class="header-left">
+      <div class="bb-kicker">Business Builds — Engagement Timeline</div>
+      <h1>Surreal Hair and Beauty</h1>
+      <div class="header-sub">Implementation programme — pre-commencement workshop complete, six-week delivery from sign-off</div>
+    </div>
+    <div class="header-meta">
+      <strong>Client</strong>Michelle Marsh
+      <strong style="margin-top:10px">Prepared by</strong>Sophie Buist &amp; Charlotte Price
+      <strong style="margin-top:10px">Pricing</strong>NZD excl. GST
+    </div>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-dot" style="background:var(--pre)"></div>
+      <span>Pre-commencement</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:var(--phase-1a)"></div>
+      <span>Phase 1A — Foundation</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:var(--phase-1b)"></div>
+      <span>Phase 1B — Client-facing build</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:var(--phase-2)"></div>
+      <span>Phase 2 — SOPs &amp; onboarding</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:var(--awards)"></div>
+      <span>NZ Hair Awards entries</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:var(--phase-3)"></div>
+      <span>Phase 3 — Marketing config</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:var(--phase-4)"></div>
+      <span>Phase 4 — SocialTap</span>
+    </div>
+  </div>
+
+  <!-- CHART -->
+  <div class="chart-wrap">
+    <div class="chart-grid">
+
+      <!-- WEEK HEADERS -->
+      <div class="wh-label"></div>
+      <div class="wh-label pre-col" style="text-align:center;">Pre</div>
+      <div class="wh-label">Week 1</div>
+      <div class="wh-label">Week 2</div>
+      <div class="wh-label">Week 3</div>
+      <div class="wh-label">Week 4</div>
+      <div class="wh-label">Week 5</div>
+      <div class="wh-label">Week 6</div>
+
+      <!-- SPACER -->
+      <div class="spacer-row"></div>
+
+      <!-- WORKSHOP (pre-commencement) -->
+      <div class="phase-label-cell">
+        <div class="phase-label-tag">Phase 2</div>
+        <div class="phase-label-name">Workshop</div>
+      </div>
+      <div class="bar-cell pre-col-shade">
+        <div class="bar bar-pre">Workshop <span class="complete-badge">✓ 6 May</span></div>
+      </div>
+      <div class="bar-cell"><div class="bar-empty"></div></div>
+      <div class="bar-cell"><div class="bar-empty"></div></div>
+      <div class="bar-cell"><div class="bar-empty"></div></div>
+      <div class="bar-cell"><div class="bar-empty"></div></div>
+      <div class="bar-cell"><div class="bar-empty"></div></div>
+      <div class="bar-cell"><div class="bar-empty"></div></div>
+
+      <div class="spacer-row"></div>
+
+      <!-- PHASE 1A — Weeks 1–4 -->
+      <div class="phase-label-cell">
+        <div class="phase-label-tag">Phase 1A</div>
+        <div class="phase-label-name">Foundation</div>
+      </div>
+      <div class="bar-cell pre-col-shade"><div class="bar-empty"></div></div>
+      <div class="bar-cell" style="grid-column: span 4; padding-right: 3px;">
+        <div class="bar bar-1a" style="width:100%">Timely · Zapier · Vish · Staff survey &amp; database</div>
+      </div>
+      <div class="bar-cell"><div class="bar-empty"></div></div>
+      <div class="bar-cell"><div class="bar-empty"></div></div>
+
+      <div class="spacer-row"></div>
+
+      <!-- PHASE 1B — Weeks 2–4 -->
+      <div class="phase-label-cell">
+        <div class="phase-label-tag">Phase 1B</div>
+        <div class="phase-label-name">Client-facing build</div>
+      </div>
+      <div class="bar-cell pre-col-shade"><div class="bar-empty"></div></div>
+      <div class="bar-cell"><div class="bar-empty"></div></div>
+      <div class="bar-cell" style="grid-column: span 3; padding-right: 3px;">
+        <div class="bar bar-1b" style="width:100%">Emails · Directory · Website bios · Linktree</div>
+      </div>
+      <div class="bar-cell"><div class="bar-empty"></div></div>
+      <div class="bar-cell"><div class="bar-empty"></div></div>
+
+      <div class="spacer-row"></div>
+
+      <!-- PHASE 2 SOPs — Weeks 4–5 -->
+      <div class="phase-label-cell">
+        <div class="phase-label-tag">Phase 2</div>
+        <div class="phase-label-name">SOPs &amp; onboarding</div>
+      </div>
+      <div class="bar-cell pre-col-shade"><div class="bar-empty"></div></div>
+      <div class="bar-cell"><div class="bar-empty"></div></div>
+      <div class="bar-cell"><div class="bar-empty"></div></div>
+      <div class="bar-cell"><div class="bar-empty"></div></div>
+      <div class="bar-cell" style="grid-column: span 2; padding-right: 3px;">
+        <div class="bar bar-2" style="width:100%">SOPs · Onboarding pack</div>
+      </div>
+      <div class="bar-cell"><div class="bar-empty"></div></div>
+
+      <div class="spacer-row"></div>
+
+      <!-- NZHA — Weeks 1–6 (full) -->
+      <div class="phase-label-cell">
+        <div class="phase-label-tag">NZHA</div>
+        <div class="phase-label-name">Awards entries</div>
+      </div>
+      <div class="bar-cell pre-col-shade"><div class="bar-empty"></div></div>
+      <div class="bar-cell" style="grid-column: span 6; padding-right: 3px;">
+        <div class="bar bar-awards" style="width:100%">Business entry from Week 1 · Stylist surveys Week 2 · Entries written &amp; submitted by Week 6</div>
+      </div>
+
+      <div class="spacer-row"></div>
+
+      <!-- PHASE 3 — Weeks 4–6 -->
+      <div class="phase-label-cell">
+        <div class="phase-label-tag">Phase 3</div>
+        <div class="phase-label-name">Marketing config</div>
+      </div>
+      <div class="bar-cell pre-col-shade"><div class="bar-empty"></div></div>
+      <div class="bar-cell"><div class="bar-empty"></div></div>
+      <div class="bar-cell"><div class="bar-empty"></div></div>
+      <div class="bar-cell"><div class="bar-empty"></div></div>
+      <div class="bar-cell" style="grid-column: span 3; padding-right: 3px;">
+        <div class="bar bar-3" style="width:100%">Klaviyo · Additional email templates · Conversion tracking</div>
+      </div>
+
+      <div class="spacer-row"></div>
+
+      <!-- PHASE 4 — Weeks 5–6 -->
+      <div class="phase-label-cell">
+        <div class="phase-label-tag">Phase 4</div>
+        <div class="phase-label-name">SocialTap install</div>
+      </div>
+      <div class="bar-cell pre-col-shade"><div class="bar-empty"></div></div>
+      <div class="bar-cell"><div class="bar-empty"></div></div>
+      <div class="bar-cell"><div class="bar-empty"></div></div>
+      <div class="bar-cell"><div class="bar-empty"></div></div>
+      <div class="bar-cell"><div class="bar-empty"></div></div>
+      <div class="bar-cell" style="grid-column: span 2; padding-right: 3px;">
+        <div class="bar bar-4" style="width:100%">NFC dot installation &amp; mapping</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- MILESTONE CARDS -->
+  <div class="milestones-label">Key milestones by week</div>
+  <div class="milestones-grid">
+
+    <div class="milestone-card mc-pre">
+      <div class="card-week pre">Pre-commencement</div>
+      <div class="card-title">Workshop <span class="complete-badge">✓ 6 May</span></div>
+      <div class="card-body">Half-day workshop delivered. Specialist package development, SocialTap in the client journey, and digital confidence. Completed before six-week programme begins.</div>
+    </div>
+
+    <div class="milestone-card mc-1a">
+      <div class="card-week">Week 1</div>
+      <div class="card-title">Platform foundation</div>
+      <div class="card-body">Timely configured in full. Zapier connected to Vish and Linktree. NZHA business entry commenced. Michelle provides sales figures and supporting content.</div>
+    </div>
+
+    <div class="milestone-card mc-1b">
+      <div class="card-week">Week 2</div>
+      <div class="card-title">Automations and survey</div>
+      <div class="card-body">Client journey automations configured. Staff survey distributed and responses collected. HTML email templates built. Stylist NZHA intake surveys distributed.</div>
+    </div>
+
+    <div class="milestone-card mc-1b">
+      <div class="card-week">Week 3</div>
+      <div class="card-title">Database and directory</div>
+      <div class="card-body">Staff database built from survey responses. Specialist directory produced. Website bios updated on Squarespace. Stylist NZHA surveys returned by end of week.</div>
+    </div>
+
+    <div class="milestone-card mc-2">
+      <div class="card-week">Week 4</div>
+      <div class="card-title">Review and SOPs</div>
+      <div class="card-body">Phase 1 review and sign-off with Michelle. SOPs commenced. NZHA individual entries being written in parallel. Marketing configuration work begins.</div>
+    </div>
+
+    <div class="milestone-card mc-3">
+      <div class="card-week">Week 5</div>
+      <div class="card-title">Marketing and SocialTap</div>
+      <div class="card-body">Klaviyo configured and connected. Email templates built. SocialTap dots installed and mapped. Conversion tracking live. Technology references confirmed for awards entry.</div>
+    </div>
+
+    <div class="milestone-card mc-awards">
+      <div class="card-week">Week 6</div>
+      <div class="card-title">Completion and submission</div>
+      <div class="card-body">Re-engagement campaign tested. SOPs and onboarding pack issued. All NZHA entries finalised and submitted by 1 July 2026 deadline. Invoice 2 due 8 June.</div>
+    </div>
+
+  </div>
+
+  <!-- REQUIRES -->
+  <div class="requires-strip">
+    <div class="requires-label">Required from Surreal before commencement</div>
+    <div class="requires-items">
+      <span class="req-item">Signed Terms of Engagement</span>
+      <span class="req-item">50% deposit</span>
+      <span class="req-item">Timely admin access</span>
+      <span class="req-item">Squarespace access</span>
+      <span class="req-item">Vish credentials</span>
+      <span class="req-item">Zapier Pro account</span>
+      <span class="req-item">Linktree Pro account</span>
+      <span class="req-item">Klaviyo account</span>
+      <span class="req-item">NZHA sales figures (Week 1)</span>
+      <span class="req-item">SocialTap hardware on-site by Week 5</span>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-brand">Prepared by Business Builds — Sophie Buist &amp; Charlotte Price, Christchurch, New Zealand. © 2026.</div>
+    <div class="footer-note">All pricing NZD excl. GST &nbsp;·&nbsp; Subscriptions paid directly by Surreal</div>
+  </div>
+
+</div>
+</body>
+</html>
