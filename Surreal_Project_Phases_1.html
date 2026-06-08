@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Surreal Hair and Beauty — Project Phases</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cream: #FAF6F0;
+  --cream-mid: #F2EBE0;
+  --cream-dark: #E8DDD0;
+  --burg: #7B2D42;
+  --burg-light: #9B3A54;
+  --burg-pale: #F5EAEd;
+  --burg-faint: #FBF3F5;
+  --ink: #2C1A22;
+  --ink-mid: #5C4A52;
+  --ink-light: #9A8A90;
+  --rule: #DDD0C8;
+  --white: #FFFFFF;
+  --sage: #4A7A5C;
+  --sage-light: #EAF2ED;
+  --sage-mid: #3A6049;
+  --terra: #B85C3A;
+  --terra-light: #F6EDE8;
+  --terra-mid: #8C4028;
+  --muted: #9A8A90;
+  --muted-light: #F2EBE0;
+  --pre: #4A3040;
+  --green: #2A5C2A;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+.page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 56px 48px 80px;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 48px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.bb-kicker {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--burg);
+  margin-bottom: 10px;
+}
+
+.header h1 {
+  font-family: 'Inter', sans-serif;
+  font-size: 32px;
+  font-weight: 500;
+  color: var(--burg);
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+
+.header-sub {
+  font-size: 14px;
+  color: var(--ink-mid);
+  font-weight: 300;
+}
+
+.header-meta {
+  text-align: right;
+  font-size: 12px;
+  color: var(--ink-light);
+  line-height: 1.8;
+  flex-shrink: 0;
+}
+
+.header-meta strong {
+  display: block;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--burg);
+  margin-bottom: 2px;
+}
+
+/* LEGEND */
+.legend {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+  padding: 14px 18px;
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--ink-mid);
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+/* STATUS BADGES */
+.status-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.badge-complete { background: var(--green); color: #fff; }
+.badge-active   { background: var(--terra); color: #fff; }
+.badge-pending  { background: var(--muted-light); color: var(--muted); border: 1px solid var(--rule); }
+.badge-tbc      { background: var(--cream-mid); color: var(--ink-light); border: 1px dashed var(--rule); }
+
+/* PHASE LIST */
+.phase-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.phase-item { position: relative; }
+
+.phase-divider {
+  height: 1px;
+  background: var(--rule);
+  margin-left: 52px;
+}
+
+.phase-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 1.1rem 0;
+  text-align: left;
+}
+
+.phase-btn:hover .phase-label-name { color: var(--burg); }
+.phase-btn:focus-visible { outline: 2px solid var(--burg-light); outline-offset: 3px; border-radius: 6px; }
+
+.phase-node {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10.5px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.03em;
+  transition: transform 0.2s;
+  margin-top: 2px;
+}
+
+.phase-btn:hover .phase-node { transform: scale(1.06); }
+
+.node-complete { background: var(--sage); color: #fff; }
+.node-active   { background: var(--terra); color: #fff; }
+.node-pending  { background: var(--cream-mid); color: var(--ink-light); border: 1.5px solid var(--rule); }
+.node-tbc      { background: var(--cream); color: var(--ink-light); border: 1.5px dashed var(--rule); }
+
+.phase-main { flex: 1; min-width: 0; }
+
+.phase-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.phase-label-tag {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--burg);
+  margin-bottom: 1px;
+}
+
+.phase-label-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+  transition: color 0.15s;
+  line-height: 1.3;
+}
+
+.phase-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.phase-chevron {
+  font-size: 11px;
+  color: var(--ink-light);
+  display: inline-block;
+  transition: transform 0.3s ease;
+  margin-left: 2px;
+}
+
+.phase-item.open .phase-chevron { transform: rotate(180deg); }
+
+.phase-sub {
+  font-size: 12px;
+  color: var(--ink-light);
+  margin-top: 2px;
+  font-style: italic;
+}
+
+/* EXPAND BODY */
+.phase-body {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.38s ease, opacity 0.28s ease;
+  padding-left: 52px;
+}
+
+.phase-item.open .phase-body {
+  max-height: 700px;
+  opacity: 1;
+  padding-bottom: 1rem;
+}
+
+.phase-inner {
+  background: var(--white);
+  border-radius: 6px;
+  padding: 16px 18px;
+  border: 1px solid var(--rule);
+  margin-top: 4px;
+  position: relative;
+}
+
+.phase-inner::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: 6px 6px 0 0;
+}
+
+.pi-1a::before { background: var(--burg); }
+.pi-1b::before { background: #9B3A54; }
+.pi-2::before  { background: #B56070; }
+.pi-3::before  { background: #C4839A; }
+.pi-4::before  { background: #D4A0B0; }
+.pi-5::before  { background: var(--rule); }
+
+.phase-desc {
+  font-size: 13px;
+  color: var(--ink-mid);
+  line-height: 1.7;
+  margin-bottom: 14px;
+  font-weight: 300;
+}
+
+.deliverable-label {
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--cream-dark);
+}
+
+.deliverable-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.deliverable-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 12.5px;
+  color: var(--ink-mid);
+  line-height: 1.5;
+  font-weight: 300;
+}
+
+.d-dot {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-top: 5px;
+}
+
+.d-complete { background: var(--sage); }
+.d-active   { background: var(--terra); }
+.d-pending  { background: var(--rule); }
+
+/* DIVIDER */
+.section-divider {
+  height: 1px;
+  background: var(--cream-dark);
+  margin: 32px 0;
+}
+
+/* FOOTER */
+.footer {
+  margin-top: 48px;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-brand {
+  font-size: 11px;
+  color: var(--ink-light);
+  font-style: italic;
+}
+
+.footer-note {
+  font-size: 11px;
+  color: var(--ink-light);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.phase-item {
+  animation: fadeUp 0.35s ease both;
+}
+
+.phase-item:nth-child(1) { animation-delay: 0.05s; }
+.phase-item:nth-child(2) { animation-delay: 0.10s; }
+.phase-item:nth-child(3) { animation-delay: 0.15s; }
+.phase-item:nth-child(4) { animation-delay: 0.20s; }
+.phase-item:nth-child(5) { animation-delay: 0.25s; }
+.phase-item:nth-child(6) { animation-delay: 0.30s; }
+.phase-item:nth-child(7) { animation-delay: 0.35s; }
+
+@media (max-width: 600px) {
+  .page { padding: 32px 20px 60px; }
+  .header { flex-direction: column; gap: 16px; }
+  .header-meta { text-align: left; }
+  .phase-row { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .footer { flex-direction: column; gap: 6px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="header">
+    <div class="header-left">
+      <div class="bb-kicker">Business Builds — Project Phases</div>
+      <h1>Surreal Hair and Beauty</h1>
+      <div class="header-sub">Select a phase to view its description and key deliverables</div>
+    </div>
+    <div class="header-meta">
+      <strong>Client</strong>Michelle Marsh
+      <strong style="margin-top:10px">Prepared by</strong>Sophie Buist &amp; Charlotte Price
+      <strong style="margin-top:10px">Pricing</strong>NZD excl. GST
+    </div>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-dot" style="background:var(--sage)"></div>
+      <span>Complete</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:var(--terra)"></div>
+      <span>In progress</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:var(--rule)"></div>
+      <span>Pending</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:var(--cream-dark); border: 1px dashed var(--rule)"></div>
+      <span>To be scoped</span>
+    </div>
+  </div>
+
+  <!-- PHASE LIST -->
+  <div class="phase-list" id="phaseList"></div>
+
+  <div class="section-divider"></div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-brand">Prepared by Business Builds — Sophie Buist &amp; Charlotte Price, Christchurch, New Zealand. &copy; 2026.</div>
+    <div class="footer-note">All pricing NZD excl. GST &nbsp;&middot;&nbsp; Subscriptions paid directly by Surreal</div>
+  </div>
+
+</div>
+
+<script>
+const phases = [
+  {
+    id: "1a",
+    nodeLabel: "1A",
+    tag: "Phase 1A",
+    name: "Platform Configuration",
+    sub: "Timely, Zapier, Vish &amp; Klaviyo integration",
+    status: "active",
+    badge: "In progress",
+    innerClass: "pi-1a",
+    desc: "Initial setup of Timely as the booking platform, including integration with Vish for colour alerts and Klaviyo for email marketing, connected via Zapier. Staff data was captured, cleaned, and structured into a database of 13 team members.",
+    deliverables: [
+      { text: "Timely platform configuration", status: "active" },
+      { text: "Zapier integration with Vish (colour alert system)", status: "active" },
+      { text: "Klaviyo connection via Zapier", status: "active" },
+      { text: "Staff survey and database build (13 staff members)", status: "complete" }
+    ]
+  },
+  {
+    id: "1b",
+    nodeLabel: "1B",
+    tag: "Phase 1B",
+    name: "Client Journey Automations",
+    sub: "Email templates, stylist directory &amp; website updates",
+    status: "active",
+    badge: "In progress",
+    innerClass: "pi-1b",
+    desc: "Automated client touchpoints built around the Timely booking journey, alongside branded HTML email templates, a specialist stylist directory, and updates to Squarespace bio pages and Linktree Pro.",
+    deliverables: [
+      { text: "Branded HTML email templates", status: "active" },
+      { text: "Specialist stylist directory", status: "active" },
+      { text: "Squarespace website bio updates", status: "active" },
+      { text: "Linktree Pro configuration", status: "active" }
+    ]
+  },
+  {
+    id: "2",
+    nodeLabel: "2",
+    tag: "Phase 2",
+    name: "Staff Training &amp; Workshop",
+    sub: "Specialist by Design — half-day team workshop",
+    status: "complete",
+    badge: "Complete",
+    innerClass: "pi-2",
+    desc: "A half-day team workshop titled Specialist by Design was delivered, focusing on service positioning and specialist identity. Supporting documentation has been produced for an incoming team member.",
+    deliverables: [
+      { text: "Specialist by Design workshop delivered", status: "complete" },
+      { text: "Standard operating procedures (SOPs)", status: "complete" },
+      { text: "Onboarding pack for incoming team member (Orla)", status: "complete" }
+    ]
+  },
+  {
+    id: "3",
+    nodeLabel: "3",
+    tag: "Phase 3",
+    name: "Marketing Configuration",
+    sub: "Klaviyo, social tracking &amp; NZHA awards entry",
+    status: "active",
+    badge: "In progress",
+    innerClass: "pi-3",
+    desc: "Full Klaviyo email marketing setup, additional branded email templates, social media conversion tracking, and preparation of the 2026 NZ Hair Awards business entry and per-stylist professional entries.",
+    deliverables: [
+      { text: "Additional email templates", status: "pending" },
+      { text: "Klaviyo audience and flow setup", status: "pending" },
+      { text: "Social media conversion tracking", status: "pending" },
+      { text: "2026 NZHA business category entry", status: "active" },
+      { text: "Per-stylist NZHA professional entries", status: "active" }
+    ]
+  },
+  {
+    id: "4",
+    nodeLabel: "4",
+    tag: "Phase 4",
+    name: "SocialTap NFC Installation",
+    sub: "NFC dot mapping and installation, targeting Week 5",
+    status: "active",
+    badge: "In progress",
+    innerClass: "pi-4",
+    desc: "Installation and configuration of SocialTap NFC dots across the salon, mapped to individual stylists and service touchpoints. Targeted for completion by Week 5 so that technology references can be included in the NZHA submission before the 1 July 2026 deadline.",
+    deliverables: [
+      { text: "SocialTap NFC dot procurement", status: "complete" },
+      { text: "Dot placement mapping", status: "active" },
+      { text: "Physical installation", status: "pending" },
+      { text: "Profile linking and testing", status: "pending" }
+    ]
+  },
+  {
+    id: "5",
+    nodeLabel: "5",
+    tag: "Phase 5",
+    name: "Online Store Integration",
+    sub: "To be scoped separately",
+    status: "tbc",
+    badge: "To be scoped",
+    innerClass: "pi-5",
+    desc: "This phase will address integration of an online retail or product offering with the existing digital ecosystem. The full scope, timeline, and investment will be defined in a separate scoping session once current phases are well underway.",
+    deliverables: [
+      { text: "Scoping session to be scheduled", status: "pending" },
+      { text: "Platform and integration options to be assessed", status: "pending" }
+    ]
+  }
+];
+
+const nodeClass  = { complete: "node-complete", active: "node-active", pending: "node-pending", tbc: "node-tbc" };
+const badgeClass = { complete: "badge-complete", active: "badge-active", pending: "badge-pending", tbc: "badge-tbc" };
+const dotClass   = { complete: "d-complete", active: "d-active", pending: "d-pending" };
+
+const list = document.getElementById('phaseList');
+
+phases.forEach((phase, idx) => {
+  const item = document.createElement('div');
+  item.className = 'phase-item';
+  item.dataset.id = phase.id;
+
+  const deliverableRows = phase.deliverables.map(d => `
+    <div class="deliverable-row">
+      <span class="d-dot ${dotClass[d.status] || 'd-pending'}"></span>
+      <span>${d.text}</span>
+    </div>
+  `).join('');
+
+  item.innerHTML = `
+    <button class="phase-btn" aria-expanded="false" aria-controls="body-${phase.id}" onclick="togglePhase('${phase.id}')">
+      <div class="phase-node ${nodeClass[phase.status]}" aria-hidden="true">${phase.nodeLabel}</div>
+      <div class="phase-main">
+        <div class="phase-row">
+          <div>
+            <div class="phase-label-tag">${phase.tag}</div>
+            <div class="phase-label-name">${phase.name} <span class="phase-chevron" aria-hidden="true">&#9662;</span></div>
+          </div>
+          <div class="phase-right">
+            <span class="status-badge ${badgeClass[phase.status]}">${phase.badge}</span>
+          </div>
+        </div>
+        <div class="phase-sub">${phase.sub}</div>
+      </div>
+    </button>
+    <div class="phase-body" id="body-${phase.id}" role="region">
+      <div class="phase-inner ${phase.innerClass}">
+        <p class="phase-desc">${phase.desc}</p>
+        <p class="deliverable-label">Key deliverables</p>
+        <div class="deliverable-list">${deliverableRows}</div>
+      </div>
+    </div>
+    ${idx < phases.length - 1 ? '<div class="phase-divider"></div>' : ''}
+  `;
+
+  list.appendChild(item);
+});
+
+function togglePhase(id) {
+  const item = document.querySelector(`.phase-item[data-id="${id}"]`);
+  const btn = item.querySelector('.phase-btn');
+  const isOpen = item.classList.contains('open');
+  item.classList.toggle('open', !isOpen);
+  btn.setAttribute('aria-expanded', String(!isOpen));
+}
+</script>
+</body>
+</html>
